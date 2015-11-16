@@ -1,0 +1,28 @@
+
+
+/*** GALLERIA ***/
+ul.gallery
+{
+    margin-top: 20px;
+}
+
+ul.gallery li
+{
+    background-color: #FFF;
+    border: 1px solid #DDD;
+    float: left;
+    padding: 10px;
+    margin:0 15px 15px 0;
+    width: 128px;
+}
+ul.gallery li img
+{
+    cursor: move;
+}
+ul.gallery li textarea
+{
+    width: 122px;
+    height: 30px;
+}
+
+/*** END GALLERIA ***/

@@ -1,0 +1,28 @@
+/*** GALLERY ***/
+/*ul.galleria-gallery
+{
+    height:128px;
+}*/
+ul.gallery-gallery li
+{
+    margin-bottom: 10px;
+}
+
+/*ul.gallery-gallery li:nth-child(n+5)
+{
+    display: none;
+}*/
+
+ul.gallery-gallery li a
+{
+    border: 0;
+    text-decoration: none;
+}
+/*** END GALLERY ***/
+
+/*** SLIDESHOW ***/
+ul.gallery-slideshow
+{
+    height: 128px;
+}
+/*** END SLIDESHOW ***/
