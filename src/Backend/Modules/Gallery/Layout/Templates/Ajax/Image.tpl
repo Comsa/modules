@@ -3,7 +3,7 @@
     <div>
         <span class="filename" style=" display: block; height: 40px;">{$image.name}</span>
     </div>
-    {$image.txtText}
+    {$image.field_description}
     <a href="" style="width: 114px; text-align: center" data-message-id="confirmDelete-{$image.id}" class="delete button icon iconDelete" id="{$image.id}">{$lblDelete|ucfirst}</a>
     <div id="confirmDelete-{$image.id}" title="{$lblDelete|ucfirst}?" style="display: none;">
         <p>

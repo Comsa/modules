@@ -324,6 +324,8 @@ class Model
                 foreach ($folders as $folder)
                 {
                     $row['image_' . $folder['dirname']] = $folder['url'] . '/' . $folder['dirname'] . '/' . $row['filename'];
+                    $path_parts = pathinfo(FRONTEND_FILES_PATH . '/Gallery/Images/Source/' . $row['filename']);
+                    $row['name'] = $path_parts['filename'];
                 }
             }
             //--Destroy the last $image (because of the reference) -- sugested by http://php.net/manual/en/control-structures.foreach.php

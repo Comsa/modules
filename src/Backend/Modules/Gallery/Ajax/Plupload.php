@@ -17,6 +17,8 @@ use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Engine\Authentication as BackendAuthentication;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Backend\Core\Engine\Template;
+
 
 /**
  * This is an ajax handler
@@ -203,7 +205,30 @@ class Plupload extends BackendBaseAJAXAction
                     }
 
                     //--Add item to the database
-                    BackendGalleryModel::insert($item);
+                    $idInsert = BackendGalleryModel::insert($item);
+
+                    $item['id'] = $idInsert;
+
+                    $tpl = new Template();
+
+                    $txtDescription = $this->frm->addTextarea("description_" . $idInsert, $item['description']);
+
+                    $item['field_description'] = $txtDescription->setAttribute('style', 'resize: none;')->parse();
+
+                    $path_parts = pathinfo(FRONTEND_FILES_PATH . '/Gallery/Images/Source/' . $item['filename']);
+                    $item['name'] = $path_parts['filename'];
+                    $folders = BackendModel::getThumbnailFolders(FRONTEND_FILES_PATH . '/Gallery/Images', true);
+
+                    foreach ($folders as $folder)
+                    {
+                        $item['image_' . $folder['dirname']] = $folder['url'] . '/' . $folder['dirname'] . '/' . $item['filename'];
+                    }
+
+                    $tpl->assign('image', $item);
+
+                    $html = $tpl->getContent(BACKEND_MODULES_PATH . '/Gallery/Layout/Templates/Ajax/Image.tpl');
+
+                    $this->output(self::OK, $html, BL::msg('Success'));
                 }
             }
         }

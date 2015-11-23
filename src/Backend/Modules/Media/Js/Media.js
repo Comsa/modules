@@ -52,19 +52,21 @@ jsBackend.Media =
             },
             width: dWidth,
             height: dHeight,
-            open : function(event, ui){
+            open: function (event, ui)
+            {
                 $("body").css({
                     overflow: 'hidden'
                 });
                 $(".ui-widget-overlay").css({
-                    background:"rgb(0, 0, 0)",
+                    background: "rgb(0, 0, 0)",
                     opacity: ".50 !important",
                     filter: "Alpha(Opacity=50)",
                 });
             },
-            beforeClose: function(event, ui) {
+            beforeClose: function (event, ui)
+            {
                 $("#encloser").removeClass('ui-widget-overlay')
-                $("body").css({ overflow: 'inherit' })
+                $("body").css({overflow: 'inherit'})
             }
         });
 
@@ -73,7 +75,7 @@ jsBackend.Media =
             {
                 e.preventDefault();
                 $("#dialog").dialog("open");
-               
+
                 $("#encloser").addClass('ui-widget-overlay')
                 $("#dialog").html("<div class='loader' style='margin-top: 50px'><span></span><span></span><span></span><span></span><span></span></div>");
                 $.ajax(
@@ -384,46 +386,7 @@ jsBackend.Media =
                         function (e)				// on stop sorting
                         {
                             e.preventDefault();
-                            var id = $(this).attr('id');
-                            var li = $(this);
-                            //--Create ajax-call
-                            $.ajax(
-                                {
-                                    data: {
-                                        fork: {action: 'DeleteFile', module: 'Media'},
-                                        id: id
-                                    },
-                                    success: function (data, textStatus)
-                                    {
-                                        //--Check if the response is correct
-                                        if (data.code == 200)
-                                        {
-                                            li.parent().remove();
-                                            jsBackend.messages.add('success', jsBackend.locale.msg('FileDeleted'));
-                                        }
-
-                                        //--If there is an error, alert the message
-                                        if (data.code != 200 && jsBackend.debug)
-                                        {
-                                            alert(data.message);
-                                        }
-
-                                    },
-                                    error: function (XMLHttpRequest, textStatus, errorThrown)
-                                    {
-                                        // revert
-                                        $(this).sortable('cancel');
-
-                                        // show message
-                                        jsBackend.messages.add('error', 'delete failed.');
-
-                                        // alert the user
-                                        if (jsBackend.debug)
-                                        {
-                                            alert(textStatus);
-                                        }
-                                    }
-                                })
+                            deleteF(this);
                         });
 
                     $('#' + id).find('.filename').click(
@@ -444,46 +407,7 @@ jsBackend.Media =
             function (e)				// on stop sorting
             {
                 e.preventDefault();
-                var id = $(this).attr('id');
-                var li = $(this);
-                //--Create ajax-call
-                $.ajax(
-                    {
-                        data: {
-                            fork: {action: 'DeleteFile', module: 'Media'},
-                            id: id
-                        },
-                        success: function (data, textStatus)
-                        {
-                            //--Check if the response is correct
-                            if (data.code == 200)
-                            {
-                                li.parent().remove();
-                                jsBackend.messages.add('success', jsBackend.locale.msg('FileDeleted'));
-                            }
-
-                            //--If there is an error, alert the message
-                            if (data.code != 200 && jsBackend.debug)
-                            {
-                                alert(data.message);
-                            }
-
-                        },
-                        error: function (XMLHttpRequest, textStatus, errorThrown)
-                        {
-                            // revert
-                            $(this).sortable('cancel');
-
-                            // show message
-                            jsBackend.messages.add('error', 'delete failed.');
-
-                            // alert the user
-                            if (jsBackend.debug)
-                            {
-                                alert(textStatus);
-                            }
-                        }
-                    })
+                deleteF(this);
             });
     },
     bindDeleteFiles: function ()
@@ -491,52 +415,89 @@ jsBackend.Media =
         $('.deleteSelected').click(
             function (e)				// on stop sorting
             {
+                $this = $(this);
+                var mid = $this.data('messageId');
+
                 e.preventDefault();
 
                 var ids = [];
+
                 var lis = $('.check:checked').parent();
                 lis.children('.delete').each(function ()
                 {
                     ids.push(this.id);
                 });
                 //--Create ajax-call
-                $.ajax(
+                $('#' + mid).dialog(
                     {
-                        data: {
-                            fork: {action: 'DeleteFiles', module: 'Media'},
-                            ids: ids
-                        },
-                        success: function (data, textStatus)
+                        autoOpen: false,
+                        draggable: false,
+                        resizable: false,
+                        modal: true,
+                        buttons: [
+                            {
+                                text: utils.string.ucfirst(jsBackend.locale.lbl('OK')),
+                                click: function ()
+                                {
+                                    // unbind the beforeunload event
+                                    $(window).off('beforeunload');
+
+                                    $(this).dialog('close');
+                                    $.ajax(
+                                        {
+                                            data: {
+                                                fork: {action: 'DeleteFiles', module: 'Media'},
+                                                ids: ids
+                                            },
+                                            success: function (data, textStatus)
+                                            {
+                                                //--Check if the response is correct
+                                                if (data.code == 200)
+                                                {
+                                                    lis.remove();
+                                                    jsBackend.messages.add('success', jsBackend.locale.msg('FilesDeleted'));
+                                                }
+
+                                                //--If there is an error, alert the message
+                                                if (data.code != 200 && jsBackend.debug)
+                                                {
+                                                    alert(data.message);
+                                                }
+
+                                            },
+                                            error: function (XMLHttpRequest, textStatus, errorThrown)
+                                            {
+                                                // revert
+                                                $(this).sortable('cancel');
+
+                                                // show message
+                                                jsBackend.messages.add('error', 'delete failed.');
+
+                                                // alert the user
+                                                if (jsBackend.debug)
+                                                {
+                                                    alert(textStatus);
+                                                }
+                                            }
+                                        })
+                                }
+                            },
+                            {
+                                text: utils.string.ucfirst(jsBackend.locale.lbl('Cancel')),
+                                click: function ()
+                                {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        ],
+                        open: function (e)
                         {
-                            //--Check if the response is correct
-                            if (data.code == 200)
-                            {
-                                lis.remove();
-                                jsBackend.messages.add('success', jsBackend.locale.msg('FilesDeleted'));
-                            }
-
-                            //--If there is an error, alert the message
-                            if (data.code != 200 && jsBackend.debug)
-                            {
-                                alert(data.message);
-                            }
-
-                        },
-                        error: function (XMLHttpRequest, textStatus, errorThrown)
-                        {
-                            // revert
-                            $(this).sortable('cancel');
-
-                            // show message
-                            jsBackend.messages.add('error', 'delete failed.');
-
-                            // alert the user
-                            if (jsBackend.debug)
-                            {
-                                alert(textStatus);
-                            }
+                            // set focus on first button
+                            if ($(this).next().find('button').length > 0) $(this).next().find('button')[0].focus();
                         }
                     })
+                ;
+                $('#' + mid).dialog('open');
             });
     },
     bindRenameFile: function ()
@@ -625,4 +586,82 @@ function rename(elem)
     $(elem).parent().append(div);
     $(elem).remove();
     input.focus();
+}
+
+function deleteF(elem)
+{
+    var mid = $(elem).data('messageId');
+
+    var id = $(elem).attr('id');
+    var li = $(elem);
+    $('#' + mid).dialog(
+        {
+            autoOpen: false,
+            draggable: false,
+            resizable: false,
+            modal: true,
+            buttons: [
+                {
+                    text: utils.string.ucfirst(jsBackend.locale.lbl('OK')),
+                    click: function ()
+                    {
+                        // unbind the beforeunload event
+                        $(window).off('beforeunload');
+
+                        $(this).dialog('close');
+                        $.ajax(
+                            {
+                                data: {
+                                    fork: {action: 'DeleteFile', module: 'Media'},
+                                    id: id
+                                },
+                                success: function (data, textStatus)
+                                {
+                                    //--Check if the response is correct
+                                    if (data.code == 200)
+                                    {
+                                        li.parent().remove();
+                                        jsBackend.messages.add('success', jsBackend.locale.msg('FileDeleted'));
+                                    }
+
+                                    //--If there is an error, alert the message
+                                    if (data.code != 200 && jsBackend.debug)
+                                    {
+                                        alert(data.message);
+                                    }
+
+                                },
+                                error: function (XMLHttpRequest, textStatus, errorThrown)
+                                {
+                                    // revert
+                                    $(this).sortable('cancel');
+
+                                    // show message
+                                    jsBackend.messages.add('error', 'delete failed.');
+
+                                    // alert the user
+                                    if (jsBackend.debug)
+                                    {
+                                        alert(textStatus);
+                                    }
+                                }
+                            })
+                    }
+                },
+                {
+                    text: utils.string.ucfirst(jsBackend.locale.lbl('Cancel')),
+                    click: function ()
+                    {
+                        $(this).dialog('close');
+                    }
+                }
+            ],
+            open: function (e)
+            {
+                // set focus on first button
+                if ($(this).next().find('button').length > 0) $(this).next().find('button')[0].focus();
+            }
+        });
+
+    $('#' + mid).dialog('open');
 }

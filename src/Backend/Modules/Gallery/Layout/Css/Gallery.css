@@ -14,6 +14,7 @@ ul.gallery li
     padding: 10px;
     margin:0 15px 15px 0;
     width: 128px;
+    position: relative;
 }
 ul.gallery li img
 {

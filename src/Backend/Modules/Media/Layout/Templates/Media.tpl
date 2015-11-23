@@ -28,7 +28,12 @@
                                 <span class="filename" style=" display: block; height: 40px;">{$mediaItems.images.name}</span>
                             </div>
                             {$mediaItems.images.txtText}
-                            <a href="" style="width: 114px; text-align: center" class="delete button icon iconDelete" id="{$mediaItems.images.id}">{$lblDelete|ucfirst}</a>
+                            <a href="" style="width: 114px; text-align: center" data-message-id="confirmDelete-{$mediaItems.images.id}" class="delete button icon iconDelete" id="{$mediaItems.images.id}">{$lblDelete|ucfirst}</a>
+                            <div id="confirmDelete-{$mediaItems.images.id}" title="{$lblDelete|ucfirst}?" style="display: none;">
+                                <p>
+                                    {$msgConfirmDelete|sprintf:{$mediaItems.images.name}}
+                                </p>
+                            </div>
                             <input style="position: absolute; right:5px; top:0px;" type="checkbox" class="check"/>
                         </li>
                     {/iteration:mediaItems.images}
@@ -53,7 +58,12 @@
                                 <span class="filename" style=" display: block; height: 40px;">{$mediaItems.files.name}</span>
                             </div>
                             {$mediaItems.files.txtText}
-                            <a href="" style="width: 114px; text-align: center" class="delete button icon iconDelete" id="{$mediaItems.files.id}">{$lblDelete|ucfirst}</a>
+                            <a href="" style="width: 114px; text-align: center" data-message-id="confirmDelete-{$mediaItems.files.id}" class="delete button icon iconDelete" id="{$mediaItems.files.id}">{$lblDelete|ucfirst}</a>
+                            <div id="confirmDelete-{$mediaItems.files.id}" title="{$lblDelete|ucfirst}?" style="display: none;">
+                                <p>
+                                    {$msgConfirmDelete|sprintf:{$mediaItems.files.name}}
+                                </p>
+                            </div>
                             <input style="position: absolute; right:5px; top:0px;" type="checkbox" class="check"/>
                         </li>
                     {/iteration:mediaItems.files}
@@ -67,7 +77,13 @@
     {option:mediaItems}
         <input type="checkbox" id="all-images" name="all-images"/>
         <label for="all-images">{$lblSelectedAll}</label>
-        <a href="" style="width: 114px; text-align: center" class="deleteSelected button icon iconDelete">{$lblDeleteSelected|ucfirst}</a>
+        <a href="" style="width: 114px; text-align: center" class="deleteSelected button icon iconDelete" data-message-id="confirmDeleteSelected">{$lblDeleteSelected|ucfirst}</a>
+
+        <div id="confirmDeleteSelected" title="{$lblDelete|ucfirst}?" style="display: none;">
+            <p>
+                {$msgConfirmDelete}
+            </p>
+        </div>
     {/option:mediaItems}
 </div>
 

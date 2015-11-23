@@ -151,7 +151,7 @@ class EditAlbum extends BackendBaseActionEdit
 
 				//--Add the parsed data to the array
 				$image["field_delete"] = $chkDelete->parse();
-				$image['field_description'] = $txtDescription->parse();
+				$image['field_description'] = $txtDescription->setAttribute('style', 'resize: none;')->parse();
 			}
 
 			//--Destroy the last $image (because of the reference) -- sugested by http://php.net/manual/en/control-structures.foreach.php
