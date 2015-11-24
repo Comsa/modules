@@ -13,6 +13,7 @@ namespace Backend\Modules\Gallery\Engine;
  *
  * @author John Poelman <john.poelman@bloobz.be>
  * @author Waldo Cosman <waldo@comsa.be>
+ * @author Nick Vandevenne <nick@comsa.be>
  */
 
 use Backend\Core\Engine\Model as BackendModel;

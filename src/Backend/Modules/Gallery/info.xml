@@ -23,6 +23,10 @@
             <name><![CDATA[Waldo Cosman (waldo@comsa.be)]]></name>
             <url><![CDATA[http://www.comsa.be]]></url>
         </author>
+        <author>
+            <name><![CDATA[Nick Vandevenne (nick@comsa.be)]]></name>
+            <url><![CDATA[http://www.comsa.be]]></url>
+        </author>
 	</authors>
 	<events>
 		<event application="backend" name="after_saved_settings"><![CDATA[Triggered when the settings are saved.]]></event>

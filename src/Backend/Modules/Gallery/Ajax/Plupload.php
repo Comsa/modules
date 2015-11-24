@@ -2,13 +2,6 @@
 
 namespace Backend\Modules\Gallery\Ajax;
 
-/*
- * This file is part of Fork CMS.
- *
- * For the full copyright and license information, please view the license
- * file that was distributed with this source code.
- */
-
 use Backend\Core\Engine\Base\AjaxAction as BackendBaseAJAXAction;
 use Backend\Core\Engine\Language as BL;
 use Backend\Modules\Gallery\Engine\Model as BackendGalleryModel;
@@ -19,19 +12,14 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Backend\Core\Engine\Template;
 
-
 /**
  * This is an ajax handler
  *
  * @author Waldo Cosman <waldo@comsa.be>
+ * @author Nick Vandevenne <nick@comsa.be>
  */
 class Plupload extends BackendBaseAJAXAction
 {
-    /**
-     * @var $frm
-     */
-    private $frmAddImage;
-
     /**
      * @var $id
      */
@@ -56,9 +44,6 @@ class Plupload extends BackendBaseAJAXAction
 
         //--Validate form
         $this->validateForm();
-
-        // output
-        //$this->output(self::OK, null, BL::msg('Success'));
     }
 
     private function loadForm()
@@ -81,7 +66,7 @@ class Plupload extends BackendBaseAJAXAction
         if ($this->frm->isSubmitted())
         {
 
-            //--Clean up fields in the form
+            //--Clean up fields in the form (NOT ALLOWED: fields from plupload like name are deleted)
             //$this->frm->cleanupFields();
 
             //--Get image field
@@ -209,12 +194,13 @@ class Plupload extends BackendBaseAJAXAction
 
                     $item['id'] = $idInsert;
 
+                    //--Create html for ajax
                     $tpl = new Template();
 
                     $txtDescription = $this->frm->addTextarea("description_" . $idInsert, $item['description']);
 
                     $item['field_description'] = $txtDescription->setAttribute('style', 'resize: none;')->parse();
-
+                    //--Parse filename to get name
                     $path_parts = pathinfo(FRONTEND_FILES_PATH . '/Gallery/Images/Source/' . $item['filename']);
                     $item['name'] = $path_parts['filename'];
                     $folders = BackendModel::getThumbnailFolders(FRONTEND_FILES_PATH . '/Gallery/Images', true);
@@ -224,10 +210,10 @@ class Plupload extends BackendBaseAJAXAction
                         $item['image_' . $folder['dirname']] = $folder['url'] . '/' . $folder['dirname'] . '/' . $item['filename'];
                     }
 
-                    $tpl->assign('image', $item);
+                    $tpl->assign('images', array($item));
 
                     $html = $tpl->getContent(BACKEND_MODULES_PATH . '/Gallery/Layout/Templates/Ajax/Image.tpl');
-
+                    //Send html (ajax response)
                     $this->output(self::OK, $html, BL::msg('Success'));
                 }
             }

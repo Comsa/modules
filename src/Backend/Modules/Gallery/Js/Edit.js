@@ -6,7 +6,6 @@
  */
 jsBackend.gallery =
 {
-
     init: function ()
     {
         //--Initialise sortable
@@ -29,7 +28,6 @@ jsBackend.gallery =
             }
         })
     },
-
     bindSortable: function ()
     {
         //--Add sortable to the galleria-lists

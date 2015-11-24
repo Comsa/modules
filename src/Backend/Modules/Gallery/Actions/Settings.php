@@ -17,6 +17,7 @@ use Backend\Core\Engine\Model as BackendModel;
  *
  * @author John Poelman <john.poelman@bloobz.be>
  * @author Waldo Cosman <waldo@comsa.be>
+ * @author Nick Vandevenne <nick@comsa.be>
  */
 class Settings extends BackendBaseActionEdit
 {

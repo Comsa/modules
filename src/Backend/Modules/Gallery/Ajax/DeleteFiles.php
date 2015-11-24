@@ -2,20 +2,14 @@
 
 namespace Backend\Modules\Gallery\Ajax;
 
-/*
- * This file is part of Fork CMS.
- *
- * For the full copyright and license information, please view the license
- * file that was distributed with this source code.
- */
 use Backend\Core\Engine\Base\AjaxAction;
 use Backend\Modules\Gallery\Engine\Model as BackendGalleryModel;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
 /**
- * Reorder images
+ * Delete images
  *
- * @author Waldo Cosman <waldo@comsa.be>
+ * @author Nick Vandevenne <nick@comsa.be>
  */
 class DeleteFiles extends AjaxAction
 {
@@ -26,7 +20,7 @@ class DeleteFiles extends AjaxAction
     {
         parent::execute();
 
-        //--Get the ids and split them
+        //--Get the ids as array
         $ids = \SpoonFilter::getPostValue('ids', null, '', 'array');
 
         //--Check if the id is not empty
@@ -34,6 +28,7 @@ class DeleteFiles extends AjaxAction
         {
             foreach ($ids as $id)
             {
+                //--Delete file
                 BackendGalleryModel::delete($id);
             }
         }

@@ -1,14 +1,17 @@
-<li id="li-{$image.id}">
-    <img style="width:128px;" src="{$image.image_128x128}" alt="{$image.filename}" title="{$image.filename}">
-    <div>
-        <span class="filename" style=" display: block; height: 40px;">{$image.name}</span>
-    </div>
-    {$image.field_description}
-    <a href="" style="width: 114px; text-align: center" data-message-id="confirmDelete-{$image.id}" class="delete button icon iconDelete" id="{$image.id}">{$lblDelete|ucfirst}</a>
-    <div id="confirmDelete-{$image.id}" title="{$lblDelete|ucfirst}?" style="display: none;">
-        <p>
-            {$msgConfirmDelete|sprintf:{$image.name}}
-        </p>
-    </div>
-    <input style="position: absolute; right:5px; top:0px;" type="checkbox" class="check"/>
-</li>
+{iteration:images}
+    <li id="li-{$images.id}">
+        <img src="{$images.image_128x128}" alt="{$images.filename}" title="{$images.filename}">
+
+        <div>
+            <span class="filename">{$images.name}</span>
+        </div>
+        {$images.field_description}
+        <a href="" data-message-id="confirmDelete-{$images.id}" class="delete button icon iconDelete" id="{$images.id}">{$lblDelete|ucfirst}</a>
+        <div id="confirmDelete-{$images.id}" title="{$lblDelete|ucfirst}?" style="display: none;">
+            <p>
+                {$msgConfirmDelete|sprintf:{$images.name}}
+            </p>
+        </div>
+        <input type="checkbox" class="check"/>
+    </li>
+{/iteration:images}

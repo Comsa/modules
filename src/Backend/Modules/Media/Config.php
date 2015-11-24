@@ -15,6 +15,7 @@ use Backend\Core\Engine\Base\Config as BaseConfig;
  * This is the configuration-object for the media module
  *
  * @author Waldo Cosman <waldo@comsa.be>
+ * @author Nick Vandevenne <nick@comsa.be>
  */
 final class Config extends BaseConfig
 {

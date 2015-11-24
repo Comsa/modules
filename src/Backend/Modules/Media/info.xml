@@ -35,6 +35,10 @@
 			<name><![CDATA[Waldo Cosman]]></name>
 			<url><![CDATA[http://www.comsa.be]]></url>
 		</author>
+        <author>
+            <name><![CDATA[Nick Vandevenne]]></name>
+            <url><![CDATA[http://www.comsa.be]]></url>
+        </author>
 	</authors>
 	<events>
 		<event application="backend" name=""><![CDATA[]]></event>

@@ -9,6 +9,7 @@
  * Interaction for the media module
  *
  * @author Waldo Cosman <waldo@comsa.be>
+ * @author Nick Vandevenne <nick@comsa.be>
  */
 jsBackend.Media =
 {

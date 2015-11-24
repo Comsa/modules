@@ -1,12 +1,6 @@
 <?php
-namespace Backend\Modules\Media\Engine;
 
-/*
- * This file is part of Fork CMS.
- *
- * For the full copyright and license information, please view the license
- * file that was distributed with this source code.
- */
+namespace Backend\Modules\Media\Engine;
 
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Engine\Language;
@@ -15,6 +9,7 @@ use Backend\Core\Engine\Language;
  * In this file we store all generic functions that we will be using in the media module
  *
  * @author Waldo Cosman <waldo@comsa.be>
+ * @author Nick Vandevenne <nick@comsa.be>
  */
 class Model
 {
@@ -199,7 +194,7 @@ class Model
 	}
 
     /**
-     * Delete a certain item
+     * Delete a certain link to mediaitem
      *
      * @param int $id
      */

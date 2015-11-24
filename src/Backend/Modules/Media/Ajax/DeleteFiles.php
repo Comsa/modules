@@ -2,12 +2,6 @@
 
 namespace Backend\Modules\Media\Ajax;
 
-/*
- * This file is part of Fork CMS.
- *
- * For the full copyright and license information, please view the license
- * file that was distributed with this source code.
- */
 use Backend\Core\Engine\Base\AjaxAction;
 use Backend\Modules\Media\Engine\Model as BackendMediaModel;
 use Backend\Core\Engine\Model as BackendModel;
@@ -15,9 +9,9 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
 /**
- * Reorder images
+ * Delete mediaitems
  *
- * @author Waldo Cosman <waldo@comsa.be>
+ * @author Nick Vandevenne <nick@comsa.be>
  */
 class DeleteFiles extends AjaxAction
 {
@@ -28,10 +22,11 @@ class DeleteFiles extends AjaxAction
     {
         parent::execute();
 
-        //--Get the ids and split them
+        //--Get the ids as array
         $ids = \SpoonFilter::getPostValue('ids', null, '', 'array');
-
+        //--Create filesystem for file actions
         $fs = new Filesystem();
+        //--Get all image folders defined by sizes
         $folders = BackendModel::getThumbnailFolders(FRONTEND_FILES_PATH . '/Media/Images', true);
 
         //--Check if the id is not empty
@@ -39,11 +34,16 @@ class DeleteFiles extends AjaxAction
         {
             foreach ($ids as $id)
             {
+                //--Get media link from id
                 $mediaModule = BackendMediaModel::getMediaModule($id);
+                //--Delete link from mediaitem to item
                 BackendMediaModel::deleteLink($id);
+                //--Check if there are any other links to the mediaitem
                 if(!BackendMediaModel::existsMediaModules($id))
                 {
+                    //--Get mediaitem
                     $media = BackendMediaModel::get($mediaModule['media_id']);
+                    //--Delete files
                     if($media['filetype'] == 1){
 
                         if($fs->exists(FRONTEND_FILES_PATH . '/Media/Images/Source/' . $media['filename']))
@@ -59,6 +59,7 @@ class DeleteFiles extends AjaxAction
                         if($fs->exists(FRONTEND_FILES_PATH . '/Media/Files/' . $media['filename']))
                             $fs->remove(FRONTEND_FILES_PATH . '/Media/Files/' . $media['filename']);
                     }
+                    //--Delete mediaitem
                     BackendMediaModel::delete($mediaModule['media_id']);
                 }
             }

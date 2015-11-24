@@ -16,12 +16,12 @@
         <ul class="media images">
             {option:mediaItems.images}
                 {iteration:mediaItems.images}
-                    <li id="li-{$mediaItems.images.id}" style="height: 150px;">
-                        <img style="width:128px;" src="{$mediaItems.images.image_128x128}" alt="{$mediaItems.images.filename}" title="{$mediaItems.images.filename}">
+                    <li id="li-{$mediaItems.images.id}">
+                        <img src="{$mediaItems.images.image_128x128}" alt="{$mediaItems.images.filename}" title="{$mediaItems.images.filename}">
                         <div>
-                            <span class="filename" style=" display: block; height: 40px;">{$mediaItems.images.name}</span>
+                            <span class="filename">{$mediaItems.images.name}</span>
                         </div>
-                        <input style="position: absolute; right:5px; top:0px;" type="checkbox" class="checkLink" id="{$mediaItems.images.id}"/>
+                        <input type="checkbox" class="checkLink" id="{$mediaItems.images.id}"/>
                     </li>
                 {/iteration:mediaItems.images}
             {/option:mediaItems.images}
@@ -37,14 +37,14 @@
         <ul class="media files">
             {option:mediaItems.files}
                 {iteration:mediaItems.files}
-                    <li id="li-{$mediaItems.files.id}" style="height: 150px;">
+                    <li id="li-{$mediaItems.files.id}">
                         <a class="url" target="_blank" href="{$mediaItems.files.url}">
-                            <img style="width:128px;" src="/src/Backend/Modules/Media/Layout/Images/ext/{$mediaItems.files.extension}.png"">
+                            <img src="/src/Backend/Modules/Media/Layout/Images/ext/{$mediaItems.files.extension}.png"">
                         </a>
                         <div>
-                            <span class="filename" style=" display: block; height: 40px;">{$mediaItems.files.name}</span>
+                            <span class="filename">{$mediaItems.files.name}</span>
                         </div>
-                        <input style="position: absolute; right:5px; top:0px;" type="checkbox" class="checkLink" id="{$mediaItems.files.id}"/>
+                        <input type="checkbox" class="checkLink" id="{$mediaItems.files.id}"/>
                     </li>
                 {/iteration:mediaItems.files}
             {/option:mediaItems.files}

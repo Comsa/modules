@@ -5,12 +5,12 @@ namespace Backend\Modules\Media\Engine;
  * In this file we store all generic functions that we will be using in the media module
  *
  * @author Waldo Cosman <waldo@comsa.be>
+ * @author Nick Vandevenne <nick@comsa.be>
  */
 
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Engine\Form as BackendForm;
 use Backend\Core\Engine\Language as BackendLanguage;
-use Backend\Core\Engine\FormImage as ImageFRM;
 
 class Helper
 {
@@ -78,6 +78,9 @@ class Helper
      */
     private $type;
 
+    /**
+     * @var mediaitem
+     */
     public $item;
 
     /**
@@ -133,7 +136,6 @@ class Helper
     /**
      * Get all the mediaitems linked to the module
      *
-     *
      */
     private function getFromModule()
     {
@@ -155,6 +157,7 @@ class Helper
             {
                 if ($row['filetype'] == 1)
                 {
+                    //--Get name without extention
                     $path_parts = pathinfo(FRONTEND_FILES_PATH . '/Media/Images/Source/' . $row['filename']);
                     $row['name'] = $path_parts['filename'];
 
@@ -166,6 +169,7 @@ class Helper
                 }
                 else
                 {
+                    //--Get name without extention
                     $path_parts = pathinfo(FRONTEND_FILES_PATH . '/Media/Files/' . $row['filename']);
                     $row['url'] = FRONTEND_FILES_URL . '/Media/Files/' . $row['filename'];
                     $row['name'] = $path_parts['filename'];
@@ -200,7 +204,7 @@ class Helper
             //--Loop the images and create checkbox
             foreach ($this->mediaItems['images'] as &$row)
             {
-                $row['chkDelete'] = $this->frm->addCheckbox("image-" . $row["id"])->parse();
+                //$row['chkDelete'] = $this->frm->addCheckbox("image-" . $row["id"])->parse();
                 $row['txtText'] = $this->frm->addTextarea("text-" . $row["id"], $row['text'])->setAttribute('style', 'resize: none;')->parse();
             }
         }
@@ -211,7 +215,7 @@ class Helper
             //--Loop the images and create checkbox
             foreach ($this->mediaItems['files'] as &$row)
             {
-                $row['chkDelete'] = $this->frm->addCheckbox("file-" . $row["id"])->parse();
+                //$row['chkDelete'] = $this->frm->addCheckbox("file-" . $row["id"])->parse();
                 $row['txtText'] = $this->frm->addTextarea("text-" . $row["id"], $row['text'])->setAttribute('style', 'resize: none;')->parse();
             }
         }
@@ -405,6 +409,7 @@ class Helper
         if ($this->isImage())
         {
             $item["filetype"] = $this->fieldTypeImage;
+            //--Put file on disk
             $this->field->moveFile($path . "/Source/" . $filename);
 
             // create folders if needed
@@ -413,9 +418,9 @@ class Helper
                 \SpoonDirectory::create($path . '/128x128');
             }
 
+            //--Create all tumbs/resizes of file
             $thumbnail = new \SpoonThumbnail($path . "/Source/" . $filename);
             $thumbnail->setAllowEnlargement(true);
-
             \Common\Core\Model::generateThumbnails($path, $path . '/Source/' . $filename);
         }
         else
@@ -428,6 +433,7 @@ class Helper
 
         //--Serialize data
         $item["data"] = serialize($data);
+        //--Store item so we can access it
         $this->item = $item;
         //--Insert into media
         return BackendModel::getContainer()->get('database')->insert("media", $item);
@@ -504,7 +510,6 @@ class Helper
      *
      * @return int or boolean
      */
-
     public function linkMediaToModule($media_id)
     {
 
@@ -546,7 +551,12 @@ class Helper
         return false;
     }
 
-    public static function getAll()
+    /***
+     * Get list of all mediaitems
+     *
+     * @return mixed
+     */
+    public static function getAllMediaItems()
     {
         $records = BackendModel::getContainer()->get('database')->getRecords(
             "SELECT m.id, filename, m.filetype, m.extension FROM media AS m"

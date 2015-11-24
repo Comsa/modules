@@ -153,38 +153,24 @@
                 </div>
                 <ul class="gallery">
                     {option:images}
-                    {iteration:images}
-                        <li id="li-{$images.id}">
-                            <img style="width:128px;" src="{$images.image_128x128}" alt="{$images.filename}" title="{$images.filename}">
-
-                            <div>
-                                <span class="filename" style=" display: block; height: 40px;">{$images.name}</span>
-                            </div>
-                            {$images.field_description}
-                            <a href="" style="width: 114px; text-align: center" data-message-id="confirmDelete-{$images.id}" class="delete button icon iconDelete" id="{$images.id}">{$lblDelete|ucfirst}</a>
-                            <div id="confirmDelete-{$images.id}" title="{$lblDelete|ucfirst}?" style="display: none;">
-                                <p>
-                                    {$msgConfirmDelete|sprintf:{$images.name}}
-                                </p>
-                            </div>
-                            <input style="position: absolute; right:5px; top:0px;" type="checkbox" class="check"/>
-                        </li>
-                    {/iteration:images}
+                        {include:{$BACKEND_MODULES_PATH}/Gallery/Layout/Templates/Ajax/Image.tpl}
                     {/option:images}
                 </ul>
-
             </div>
             <div class="clearfix">&nbsp;</div>
-        {option:images}
-            <input type="checkbox" id="all-images" name="all-images"/>
-            <label for="all-images">{$lblSelectedAll}</label>
-            <a href="" style="width: 114px; text-align: center" data-message-id="confirmDeleteSelected" class="deleteSelected button icon iconDelete">{$lblDeleteSelected|ucfirst}</a>
-            <div id="confirmDeleteSelected" title="{$lblDelete|ucfirst}?" style="display: none;">
-                <p>
-                    {$msgConfirmDelete}
-                </p>
+            <div>
+                <span class="deleteCheck">
+                    <input type="checkbox" id="all-images" name="all-images"/>
+                    <label for="all-images">{$lblSelectedAll}</label>
+                </span>
+                <a href="" style="width: 114px; text-align: center" data-message-id="confirmDeleteSelected" class="deleteSelected button icon iconDelete">{$lblDeleteSelected|ucfirst}</a>
+
+                <div id="confirmDeleteSelected" title="{$lblDelete|ucfirst}?" style="display: none;">
+                    <p>
+                        {$lblDeleteSelectedImages|ucfirst}
+                    </p>
+                </div>
             </div>
-        {/option:images}
             <!-- div.box -->
             <div class="buttonHolderRight">
                 <input id="deleteButton" class="inputButton button mainButton" type="submit" name="delete" value="{$lblSave|ucfirst}"/>

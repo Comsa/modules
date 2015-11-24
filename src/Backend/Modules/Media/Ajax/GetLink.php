@@ -2,20 +2,14 @@
 
 namespace Backend\Modules\Media\Ajax;
 
-/*
- * This file is part of Fork CMS.
- *
- * For the full copyright and license information, please view the license
- * file that was distributed with this source code.
- */
 use Backend\Core\Engine\Base\AjaxAction;
 use Backend\Modules\Media\Engine\Helper as BackendMediaHelper;
 use Backend\Core\Engine\Template;
 
 /**
- * Reorder images
+ * Get all mediaitems on server and returns a html list
  *
- * @author Waldo Cosman <waldo@comsa.be>
+ * @author Nick Vandevenne <nick@comsa.be>
  */
 class GetLink extends AjaxAction
 {
@@ -26,20 +20,11 @@ class GetLink extends AjaxAction
     {
         parent::execute();
 
-        //--Get the ids and split them
-        $id = \SpoonFilter::getPostValue('id', null, '', 'string');
-
-        //--Check if the id is not empty
-//        if(!empty($id))
-//        {
-//            //--Set the sequence to 1
-//                BackendMediaModel::deleteLink($id);
-//        }
-
+        //--Create template object
         $tpl = new Template();
-
-        $tpl->assign('mediaItems', BackendMediaHelper::getAll());
-
+        //--Add list of all mediaitems to template
+        $tpl->assign('mediaItems', BackendMediaHelper::getAllMediaItems());
+        //--Get html list
         $html = $tpl->getContent(BACKEND_MODULES_PATH . '/Media/Layout/Templates/Ajax/Link.tpl');
 
         // success output
